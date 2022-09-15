@@ -1,22 +1,23 @@
 #include "gs_object.h"
 
 #include <assert.h>
+#include <string.h>
 
-int captured;
+int value;
 
 void capture_42(void *data, va_list args)
 {
-    captured = 42;
+    value = 42;
 }
 
 void capture_data(void *data, va_list args)
 {
-    captured = (int)data;
+    value = (int)data;
 }
 
 void capture_first_arg_as_int(void *data, va_list args)
 {
-    captured = va_arg(args, int);
+    value = va_arg(args, int);
 }
 
 void gs_object_test_capture_constant()
@@ -24,9 +25,9 @@ void gs_object_test_capture_constant()
     gs_object_define(o);
     gs_object_initialize(o, 0, capture_42);
 
-    captured = 0;
+    value = 0;
     gs_object_send(o);
-    assert(captured == 42);
+    assert(value == 42);
 }
 
 void gs_object_test_capture_data()
@@ -34,9 +35,9 @@ void gs_object_test_capture_data()
     gs_object_define(o);
     gs_object_initialize(o, (void *)123, capture_data);
 
-    captured = 0;
+    value = 0;
     gs_object_send(o);
-    assert(captured == 123);
+    assert(value == 123);
 }
 
 void gs_object_test_capture_argument()
@@ -44,9 +45,31 @@ void gs_object_test_capture_argument()
     gs_object_define(o);
     gs_object_initialize(o, (void *)123, capture_first_arg_as_int);
 
-    captured = 0;
+    value = 0;
     gs_object_send(o, 13);
-    assert(captured == 13);
+    assert(value == 13);
+}
+
+void adder(void *data, va_list args)
+{
+    const char * method = va_arg(args, const char *);
+    if (strcmp(method, "inc") == 0)
+        value++;
+    else if (strcmp(method, "dec") == 0)
+        value--;
+}
+
+void gs_object_test_example_adder()
+{
+    gs_object_define(o);
+    gs_object_initialize(o, 0, adder);
+
+    value = 0;
+    gs_object_send(o, "inc");
+    gs_object_send(o, "inc");
+    assert(value == 2);
+    gs_object_send(o, "dec");
+    assert(value == 1);
 }
 
 void gs_object_test()
@@ -54,4 +77,5 @@ void gs_object_test()
     gs_object_test_capture_constant();
     gs_object_test_capture_data();
     gs_object_test_capture_argument();
+    gs_object_test_example_adder();
 }
