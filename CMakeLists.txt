@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 
 project(duck)
 
-set(CMAKE_CXX_STANDARD 14)
-
 include_directories(inc)
 
 file(GLOB_RECURSE DUCK_MAIN_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
