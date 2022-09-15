@@ -1,2 +1,8 @@
-#!/bin/sh
-make test && ./test
+#!/bin/bash
+cmake \
+	-S . \
+	-B build \
+	-G Ninja \
+	-DCMAKE_BUILD_TYPE:STRING=Debug && \
+cmake --build build && \
+(cd build && ./test)

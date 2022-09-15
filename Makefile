@@ -1,1 +1,0 @@
-test: gs_object.o gs_object_test.o
