@@ -14,7 +14,9 @@ typedef struct duck *duck_t;
 
 typedef void (*duck_send_t)(void *, va_list);
 
-void duck_initialize(duck_t, void *, duck_send_t);
+void duck_initialize(duck_t);
+void duck_set_data(duck_t, void *);
+void duck_set_send_fn(duck_t, duck_send_t);
 void duck_invoke(duck_t, va_list);
 void duck_send(duck_t, ...);
 

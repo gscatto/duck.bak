@@ -23,7 +23,8 @@ void capture_first_arg_as_int(void *data, va_list args)
 void duck_test_capture_constant()
 {
     duck_define(o);
-    duck_initialize(o, 0, capture_42);
+    duck_initialize(o);
+    duck_set_send_fn(o, capture_42);
 
     value = 0;
     duck_send(o);
@@ -33,7 +34,7 @@ void duck_test_capture_constant()
 void duck_test_capture_data()
 {
     duck_define(o);
-    duck_initialize(o, (void *)123, capture_data);
+    duck_set_data(o, (void *)123);
 
     value = 0;
     duck_send(o);
@@ -43,7 +44,8 @@ void duck_test_capture_data()
 void duck_test_capture_argument()
 {
     duck_define(o);
-    duck_initialize(o, (void *)123, capture_first_arg_as_int);
+    duck_initialize(o);
+    duck_set_send_fn(o, capture_first_arg_as_int);
 
     value = 0;
     duck_send(o, 13);
@@ -62,7 +64,8 @@ void adder(void *data, va_list args)
 void duck_test_example_adder()
 {
     duck_define(d);
-    duck_initialize(d, 0, adder);
+    duck_initialize(d);
+    duck_set_send_fn(d, adder);
 
     value = 0;
     duck_send(d, "inc");
