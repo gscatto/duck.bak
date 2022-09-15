@@ -1,6 +1,6 @@
-void gs_object_test();
+void duck_test();
 
 int main() {
-    gs_object_test();
+    duck_test();
     return 0;
 }
